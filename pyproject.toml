@@ -1,0 +1,50 @@
+[project]
+name = "dastavka-bot"
+version = "2.0.0"
+description = "Telegram food-delivery bot for a single cafe: menu, cart, orders, couriers, admin panel."
+readme = "README.md"
+license = { file = "LICENSE" }
+requires-python = ">=3.12"
+# Runtime dependencies are pinned in requirements.txt (used by Docker and CI).
+
+[tool.ruff]
+target-version = "py312"
+line-length = 120
+extend-exclude = [".venv"]
+
+[tool.ruff.lint]
+select = [
+    "E",     # pycodestyle errors
+    "W",     # pycodestyle warnings
+    "F",     # pyflakes
+    "I",     # isort
+    "B",     # flake8-bugbear
+    "UP",    # pyupgrade
+    "ASYNC", # flake8-async
+    "SIM",   # flake8-simplify
+    "RUF",   # ruff-specific
+]
+ignore = [
+    "E501",   # long lines are handled by the formatter; lexicon strings stay on one line
+    "RUF001", # Uzbek texts use typographic apostrophes (‘ ’) on purpose
+    "RUF002",
+    "RUF003",
+    "SIM102", # nested ifs read better in some handlers
+    "SIM105", # explicit try/except/pass around Telegram edits is intentional
+    "B904",
+]
+
+[tool.ruff.lint.per-file-ignores]
+"tests/**" = ["B011"]
+
+[tool.ruff.lint.isort]
+known-first-party = ["core", "handlers", "locales", "utils", "db_helpers", "database_setup", "bot"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+asyncio_mode = "auto"
+asyncio_default_fixture_loop_scope = "function"
+markers = [
+    "integration: needs a real PostgreSQL (TEST_DATABASE_URL or Docker)",
+]
+filterwarnings = ["error::pytest.PytestUnraisableExceptionWarning"]
