@@ -2,6 +2,8 @@
 
 [English](README.md) | **O‘zbekcha**
 
+[![▶ Jonli demo](https://img.shields.io/badge/%E2%96%B6_Jonli_demo-xoliddev.github.io-22b8f0?style=for-the-badge)](https://xoliddev.github.io/demos/dastavka-bot/)
+
 ![tests](https://img.shields.io/badge/tests-921%20passing-brightgreen) ![ruff](https://img.shields.io/badge/lint-ruff-261230)
 ![Python](https://img.shields.io/badge/Python-3.12%2B-3776AB?logo=python&logoColor=white)
 ![aiogram](https://img.shields.io/badge/aiogram-3.31-2CA5E0?logo=telegram&logoColor=white)
