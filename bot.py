@@ -25,7 +25,7 @@ from redis.asyncio import Redis
 
 from core.config import Settings
 from core.logging_config import setup_logging
-from core.middlewares import UserMiddleware
+from core.middlewares import ThrottleMiddleware, UserMiddleware
 from core.telegram import AnswerCallbackOnce
 from database_setup import apply_schema
 from utils.geocoder import Geocoder, configure_geocoder, get_geocoder
@@ -43,12 +43,15 @@ def create_bot(settings: Settings, session: BaseSession | None = None) -> Bot:
     return bot
 
 
-def build_dispatcher(settings: Settings, pool: asyncpg.Pool, storage: BaseStorage) -> Dispatcher:
+def build_dispatcher(
+    settings: Settings, pool: asyncpg.Pool, storage: BaseStorage, *, throttle: ThrottleMiddleware | None = None
+) -> Dispatcher:
     """Create a fully wired Dispatcher. Used by ``main`` and by the handler tests."""
     from handlers import admin, courier_handlers, customer_handlers, fallback, user_handlers
     from handlers.admin import group
 
     dp = Dispatcher(storage=storage, settings=settings, pool=pool)
+    dp.update.outer_middleware(throttle or ThrottleMiddleware())
     dp.update.outer_middleware(UserMiddleware())
     dp.errors.register(on_error)
 

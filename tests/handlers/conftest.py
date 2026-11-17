@@ -23,6 +23,7 @@ from aiogram.types import CallbackQuery, Chat, Contact, ErrorEvent, Location, Me
 
 from bot import build_dispatcher, create_bot
 from core.config import Settings
+from core.middlewares import ThrottleMiddleware
 from utils import geocoder
 
 
@@ -146,7 +147,8 @@ async def harness(db_pool: asyncpg.Pool, settings: Settings, monkeypatch) -> Asy
 
     session = MockedSession()
     bot = create_bot(settings, session=session)
-    dp = build_dispatcher(settings, db_pool, MemoryStorage())
+    # Tests replay whole flows in milliseconds; flood control is covered by its own tests.
+    dp = build_dispatcher(settings, db_pool, MemoryStorage(), throttle=ThrottleMiddleware(limit=10_000))
 
     # Production logs and swallows handler exceptions; tests must see them.
     errors: list[BaseException] = []
