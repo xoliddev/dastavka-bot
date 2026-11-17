@@ -776,7 +776,7 @@ async def cb_place_order(call: CallbackQuery, state: FSMContext, pool: asyncpg.P
 async def fsm_get_customer_name(message: Message, state: FSMContext, pool: asyncpg.Pool) -> Any:
     customer_name = message.text.strip()
     lang = _lang(await get_user(pool, message.from_user.id))
-    if not customer_name:
+    if not customer_name or len(customer_name) > 255:  # orders.customer_name is VARCHAR(255)
         await message.answer(get_text("ask_for_customer_name", lang, LEXICON))
         return
 

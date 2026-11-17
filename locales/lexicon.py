@@ -802,6 +802,16 @@ LEXICON: dict[str, dict[str, str]] = {
         "ru": "📝 Пожалуйста, дайте имя этому адресу (например, Дом, Работа):",
         "en": "📝 Please name this address (e.g., Home, Work):",
     },
+    "address_name_invalid": {
+        "uz": "⚠️ Manzil nomi 1–100 belgidan iborat bo'lsin. Qaytadan yozing:",
+        "ru": "⚠️ Название адреса должно быть от 1 до 100 символов. Напишите ещё раз:",
+        "en": "⚠️ The address name must be 1–100 characters. Please send it again:",
+    },
+    "address_limit_reached": {
+        "uz": "⚠️ Ko'pi bilan {limit} ta manzil saqlash mumkin. Avval keraksizini o'chiring.",
+        "ru": "⚠️ Можно сохранить не больше {limit} адресов. Сначала удалите ненужный.",
+        "en": "⚠️ You can save at most {limit} addresses. Delete one you no longer need first.",
+    },
     "address_saved_success": {"uz": "✅ Manzil saqlandi!", "ru": "✅ Адрес сохранён!", "en": "✅ Address saved!"},
     "address_deleted_success": {"uz": "✅ Manzil o‘chirildi!", "ru": "✅ Адрес удалён!", "en": "✅ Address deleted!"},
     "address_not_found": {"uz": "Manzil topilmadi", "ru": "Адрес не найден", "en": "Address not found"},

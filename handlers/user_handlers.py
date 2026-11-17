@@ -44,6 +44,9 @@ from utils.lexicon_utils import get_text
 
 router = Router(name="user")
 
+# Bitta mijoz saqlay oladigan manzillar soni
+MAX_SAVED_ADDRESSES = 10
+
 
 # ==============================================================================
 # QUYIDAGI FUNKSIYALAR KO'P RESTORANLI TIZIMDAGI "TEGLAR" (TAGS) MANTIG'I UCHUN
@@ -389,6 +392,16 @@ async def fsm_saved_loc_name(message: Message, state: FSMContext, pool: asyncpg.
     data = await state.get_data()
     name = message.text.strip()
     lat, lon = data["tmp_lat"], data["tmp_lon"]
+    lang = _lang(await get_user(pool, message.from_user.id))
+
+    # Matn cheksiz bo'lmasin (ustun VARCHAR(100)) va bitta mijoz bazani manzil bilan to'ldirib tashlamasin
+    if not 1 <= len(name) <= 100:
+        await message.answer(get_text("address_name_invalid", lang, LEXICON))
+        return
+    if len(await get_saved_locations(pool, message.from_user.id)) >= MAX_SAVED_ADDRESSES:
+        await message.answer(get_text("address_limit_reached", lang, LEXICON).format(limit=MAX_SAVED_ADDRESSES))
+        await state.clear()
+        return
 
     address = await get_address_from_coords(lat, lon)
 
